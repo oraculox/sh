@@ -2,20 +2,22 @@
 set -e
 ## curl -fsSl https://raw.githubusercontent.com/oraculox/sh/main/aws-ecr-secret-creation.sh -o aws-ecr-secret-creation.sh && sh aws-ecr-secret-creation.sh
 ### Create cronjob.
-echo "## Creating k8s Cronjob to run every 6h to renew AWS ECR token to allow pull images from Private ECR. ##"
+echo "## Creating k8s Cronjob for AWS ECR to pull images from Private ECR. ##"
 echo ""
 read -p "enter AWS Region (default is: eu-west-2):" BREGION
 read -p "enter AWS Account:" BAWS_ACCOUNT
 read -p "enter AWS Secret:" BAWS_SECRET
 read -p "enter AWS Key:" BAWS_KEY
 read -p "enter namaspace:" BNAMESPACE
+read -p "enter Email:" BEMAIL
 
 echo ''
-echo 'AWS Region is: '${BREGION}
+echo 'AWS Region is: '$BREGION
 echo 'AWS Account is: '$BAWS_ACCOUNT
 echo 'AWS Secretis : '$BAWS_SECRET
 echo 'AWS Key is: '$BAWS_KEY
 echo 'namaspace is: '$BNAMESPACE
+echo 'Email is: '$BEMAIL
 echo ''
 
 read -p "Do you confirm the details? (y/N)?" CONFIRM
@@ -92,7 +94,7 @@ spec:
               echo "ENV variables setup done."
               kubectl delete secret -n BNAMESPACE --ignore-not-found regcred
               kubectl create secret -n BNAMESPACE docker-registry regcred --docker-server=https://BAWS_ACCOUNT.dkr.ecr.BREGION.amazonaws.com \
-              --docker-username=AWS --docker-password=\${TOKEN} --docker-email=ots@objectway.com
+              --docker-username=AWS --docker-password=\${TOKEN} --docker-email=BEMAIL
               echo "Secret created by name regcred"
               kubectl patch serviceaccount default -p '{"imagePullSecrets":[{"name":"'regcred'"}]}' -n BNAMESPACE
               echo "All done."
@@ -110,7 +112,7 @@ spec:
             - name: REGION
               value: BREGION
             - name: EMAIL
-              value: ots@objectway.com
+              value: BEMAIL
             image: public.ecr.aws/d8v6r0q8/ots-common/aws-kubectl:v1
             imagePullPolicy: IfNotPresent
             name: ecr-cred-helper
@@ -136,7 +138,7 @@ sed -i "s|BNAMESPACE|$BNAMESPACE|g" cronjob.yaml
 sed -i "s|BAWS_SECRET|$BAWS_SECRET|g" cronjob.yaml
 sed -i "s|BAWS_KEY|$BAWS_KEY|" cronjob.yaml
 sed -i "s|BAWS_ACCOUNT|$BAWS_ACCOUNT|g" cronjob.yaml
-
+sed -i "s|BEMAIL|$BEMAIL|g" cronjob.yaml
 
 else
 echo 'Answer was NO / exiting...'
