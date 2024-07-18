@@ -105,11 +105,11 @@ spec:
             - name: AWS_ACCESS_KEY_ID
               value: BAWS_KEY
             - name: ACCOUNT
-              value: BAWS_ACCOUNT
+              value: "BAWS_ACCOUNT"
             - name: SECRET_NAME
               value: regcred
             - name: REGION
-              value: "BREGION"
+              value: BREGION
             - name: EMAIL
               value: BEMAIL
             image: public.ecr.aws/d8v6r0q8/ots-common/aws-kubectl:v1
