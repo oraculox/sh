@@ -1,5 +1,6 @@
+#!/bin/sh
+set -e
 ### Create cronjob.
-
 read -p "enter AWS Region (default is: eu-west-2):" BREGION
 read -p "enter AWS Account:" BAWS_ACCOUNT
 read -p "enter AWS Secret:" BAWS_SECRET
