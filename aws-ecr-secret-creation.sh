@@ -1,7 +1,9 @@
 #!/bin/sh
 set -e
-### Create cronjob.
 ## curl -fsSl https://raw.githubusercontent.com/oraculox/sh/main/aws-ecr-secret-creation.sh -o aws-ecr-secret-creation.sh && sh aws-ecr-secret-creation.sh
+### Create cronjob.
+echo "## Creating k8s Cronjob to run every 6h to renew AWS ECR token to allow pull images from Private ECR. ##"
+echo ""
 read -p "enter AWS Region (default is: eu-west-2):" BREGION
 read -p "enter AWS Account:" BAWS_ACCOUNT
 read -p "enter AWS Secret:" BAWS_SECRET
@@ -16,10 +18,8 @@ echo 'AWS Key is: '$BAWS_KEY
 echo 'namaspace is: '$BNAMESPACE
 echo ''
 
-read -p "Do you confirm the details? (y/N):" -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
+read -p "Do you confirm the details? (y/N)?" CONFIRM
+if [ "$CONFIRM" = "y" ]; then
 cat >> cronjob.yaml <<EOF
 apiVersion: v1
 kind: ServiceAccount
