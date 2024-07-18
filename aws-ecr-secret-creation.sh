@@ -93,8 +93,7 @@ spec:
               TOKEN=\`aws ecr get-login --region BREGION --registry-ids BAWS_ACCOUNT | cut -d' ' -f6)\`
               echo "ENV variables setup done."
               kubectl delete secret -n BNAMESPACE --ignore-not-found regcred
-              kubectl create secret -n BNAMESPACE docker-registry regcred --docker-server=https://BAWS_ACCOUNT.dkr.ecr.BREGION.amazonaws.com \
-              --docker-username=AWS --docker-password=\${TOKEN} --docker-email=BEMAIL
+              kubectl create secret -n BNAMESPACE docker-registry regcred --docker-server=https://BAWS_ACCOUNT.dkr.ecr.BREGION.amazonaws.com --docker-username=AWS --docker-password=\${TOKEN} --docker-email=BEMAIL
               echo "Secret created by name regcred"
               kubectl patch serviceaccount default -p '{"imagePullSecrets":[{"name":"'regcred'"}]}' -n BNAMESPACE
               echo "All done."
@@ -110,7 +109,7 @@ spec:
             - name: SECRET_NAME
               value: regcred
             - name: REGION
-              value: BREGION
+              value: "BREGION"
             - name: EMAIL
               value: BEMAIL
             image: public.ecr.aws/d8v6r0q8/ots-common/aws-kubectl:v1
