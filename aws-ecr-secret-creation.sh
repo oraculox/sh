@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e
 ### Create cronjob.
+## curl -fsSl https://raw.githubusercontent.com/oraculox/sh/main/aws-ecr-secret-creation.sh -o aws-ecr-secret-creation.sh && sh aws-ecr-secret-creation.sh
 read -p "enter AWS Region (default is: eu-west-2):" BREGION
 read -p "enter AWS Account:" BAWS_ACCOUNT
 read -p "enter AWS Secret:" BAWS_SECRET
