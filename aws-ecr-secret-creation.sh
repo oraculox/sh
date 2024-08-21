@@ -146,7 +146,7 @@ fi
 echo ""
 echo "#### cronjob.yaml created ####"
 echo "------------------------------"
-echo "To apply run: kubectl apply -f cronjob.yam"
+echo "To apply run: kubectl apply -f cronjob.yaml"
 echo "To not wait 6h to run the job, run the command below to run now:"
 echo "kubectl create job --from=cronjob/ecr-cred-helper ecr-cred-helper -n $BNAMESPACE"
 echo "------------------------------"
